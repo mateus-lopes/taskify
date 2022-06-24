@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- css -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link 
+        rel="stylesheet" 
+        href="style.css"
+    />
+    <title>TodoLista</title>
+</head>
+<body id="app">
+    <div  class="py-4 container">
+        <header class="header container-fluid mb-4">
+            <div class="row">
+                <div class="col-8 pl-0">
+                    <div class="div_title">
+                        <h2 class="h2_title">{{title_special}}</h2>
+                        <p class="p_title">{{description_special}}</p>
+                    </div>
+                </div>
+                <div class="col-4 text-right">
+                    <img class="img-fluid img_user shadow" src="img/users/user_default.png" alt="Avatar">
+                </div>
+            </div>
+            <hr style="margin-left: -15px;margin-right:-15px;"> 
+        </header>
+        <main class="container-fluid px-0">
+            <ul v-if="tasks.length != 0" class="list-unstyled">
+                <li v-for="(task, index) in tasks" :key="index">
+                    <label class="label_checkbox">
+                        <div class="div_wrapper">
+                            <input @click="checked(index)" v-model="task.checked" type="checkbox" class="check_task" />
+                            <span class="span_checkbox"></span>
+                        </div>
+                        <span class="span_name" :class="{'removed':task.checked}">{{task.title}}</span>
+                    </label>
+                </li>
+            </ul>
+            <ul v-else class="list-unstyled">
+                <li class="text-muted">
+                    Sua lista está vazia...
+                </li>
+            </ul>
+            <div class="div_add_task">
+                <div class="row">
+                    <div class="div_wrapper py-2">
+                        <button @click="add_task" class="btn div_btn_add shadow" :class="{active:active_task, error_add: error_add_task}">   
+                            <img :class="{active:active_task,active_add:animation_add}" src="img/icon/close_small.svg"  class="img-fluid span_icon_add" alt="" srcset="">
+                        </button>
+                        <button @click="edit_config" class="btn div_icon_config" :class="{active:active_task}">   
+                            <img src="img/icon/settings.svg"  class="img-fluid" alt="" srcset="">
+                            <span class="btn nav_wrapper" :class="{active_function:active_config}">
+                                <!-- nav_settings -->
+                                <div class="modal-content">
+                                    <div class="modal-header pt-1 pb-0">
+                                        <p class="pt-2 text-light"><strong>Configurações</strong></p>  
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-12 pt-1">
+                                                <input
+                                                id="title_task"
+                                                v-model="title"
+                                                type="text" 
+                                                class="form-control" 
+                                                placeholder="Carregando..."
+                                                />
+                                            </div>
+                                            <div class="col-12 pt-3">
+                                                <textarea 
+                                                id="description_task"
+                                                v-model="description"
+                                                type="text" 
+                                                rows="5"
+                                                class="form-control" 
+                                                placeholder="Carregando..."
+                                                ></textarea>
+                                                <div>  
+                                                    <div class="col-12 text-left px-0 pt-4">
+                                                        <label class="d-block">
+                                                            <div class="switch_box text-danger">
+                                                                <input v-model="delete_auto" type="checkbox">
+                                                                <span class="switch round"></span>
+                                                            </div>
+                                                            <span class="span_name pl-2 text-light">Excluir Tarefas Concluidas</span>
+                                                        </label>
+                                                        <label class="d-block py-2">
+                                                            <div class="switch_box text-danger">
+                                                                <input v-model="dark" type="checkbox">
+                                                                <span class="switch round"></span>
+                                                            </div>
+                                                            <span class="span_name pl-2 text-light">Tema Escuro</span>
+                                                        </label>
+                                                    </div>
+                                                    <label class="d-flex">
+                                                        <span @click="delete_tasks" class="btn px-4 btn-secondary mt-2">Limpar Todas as Tarefas</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                        </button>
+                        <button @click="animation_add_task" :class="{active:active_task,active:key}" class="btn div_btn_close shadow z-1">   
+                            <img :class="{active:active_task, active:key}" src="img/icon/close_small.svg" class="img-fluid span_icon_close" alt="" srcset="">
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        <div :class="{active:active_task}" class="div_input">
+                            <textarea @keyup.enter="add_task" v-model="new_task" class="form-control" placeholder="Adicionar uma Tarefa..." name="input_task"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- bootstrap -->
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"
+    ></script>
+    <script
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"
+    ></script>
+    <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"
+    ></script>
+    <!-- vue -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- static -->
+    <script src="script.js"></script>
+</body>
+</html>
