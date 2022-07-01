@@ -1,0 +1,83 @@
+<template>
+    <div class="header container-fluid mb-4">
+		<div class="row">
+			<div class="col-8 pl-0">
+				<h2 @update="update" class="h2_title">{{title}}</h2>
+				<p @update="update" class="p_title">{{description}}</p>
+			</div>
+            <DivUser :src_user="src_user" />
+		</div>
+		<hr style="margin-left: -15px;margin-right:-15px;"> 
+    </div>
+</template>
+
+<script>
+import DivUser from './UserAvatar.vue'
+
+export default {
+    components: {
+        DivUser,
+    },
+	props: {
+		title:String,
+		description:String,
+		src_user:String,
+	},
+	data() {
+		return {
+
+		}
+	}
+}
+</script>
+
+<style>
+
+/* --- header --- */
+
+/* -- title -- */
+.header .h2_title {
+	font-weight: 800;
+	font-size: 1.2em;
+	border: none;
+	width: 100%;
+}
+
+.header .p_title {
+	color: #3f97af;
+	font-weight: 500;
+	font-size: .7em;
+}
+
+/* ---- resposividade ---- */
+
+@media screen and (min-width:375px) {
+	/* -- title -- */
+	.h2_title {
+		padding-left: 0;
+		background-color: transparent;
+	}   
+	.p_title{
+		padding-left: 0;
+	}
+}
+
+
+
+@media screen and (min-width:768px) {
+    /* -- title -- */
+    .header .h2_title {
+		font-weight: 800;
+		font-size: 1.6em;
+		border: none;
+		width: 100%;
+    }
+    
+    .header .p_title {
+		color: #3f97af;
+		font-weight: 500;
+		font-size: .9em;
+    }
+}
+
+</style>
