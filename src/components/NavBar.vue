@@ -1,13 +1,19 @@
 <template>
-    <div class='div_add_task'>
+    <div @keyup.esc="hidden_configs" class='div_add_task'>
         <div class='row'>
             <div class='div_wrapper py-2'>
-                <AddBtn :active_task="active_task" :error_add_task="error_add_task"/>
-                <ConfigBtn :title="title" :delete_auto_check="delete_auto_check" :description="description" :active_task="active_task" :active_config="active_config"/>
-                <NavBtn @animation="animation_add_task" :active_task="active_task" :key="key" />
+                <AddBtn @animation="add_task" :active_navbar="active_navbar" :error_add_task="error_add_task" />
+                <ConfigBtn @update_title="update_title" @update_description="update_description"
+                    @animation="show_configs" @delete_tasks="delete_tasks" @delete_auto="delete_auto" :title="title"
+                    :delete_auto_check="delete_auto_check" :description="description" :active_navbar="active_navbar"
+                    :active_config="active_config" />
+                <NavBtn @animation="show_navbar" :active_navbar="active_navbar" :key_animation="key_animation" />
             </div>
             <div class='col-12'>
-                <TaskInput :new_task="new_task" :active_task="active_task" />
+                <div :class='{ active: active_navbar }' class='div_input'>
+                    <textarea @keyup.enter='add_task' v-model='new_task' class='form-control'
+                        placeholder='Adicionar uma Tarefa...' name='input_task'></textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -17,19 +23,17 @@
 import AddBtn from './NavComponents/AddBtn.vue'
 import ConfigBtn from './NavComponents/ConfigBtn.vue'
 import NavBtn from './NavComponents/NavBtn.vue'
-import TaskInput from './NavComponents/TaskInput.vue'
-// so vem vagabunda
 export default {
     components: {
         AddBtn,
         ConfigBtn,
         NavBtn,
-        TaskInput,
     },
     props: {
-        delete_auto_check:Boolean,
-        title:String,
-        description:String,
+        delete_auto_check: Boolean,
+        dark: Boolean,
+        title: String,
+        description: String,
     },
     data() {
         return {
@@ -37,68 +41,73 @@ export default {
             new_task: '',
 
             // animations
-            key: true,
+            key_animation: true,
             animation_add: true,
-            active_task: true,
+            active_navbar: true,
             active_config: false,
             error_add_task: false,
 
         }
     },
     methods: {
-        animation_add_task(){
-            console.log('executei')
-            if(this.active_config == true){
+        hidden_configs() {
+            if (this.active_config == true) {
                 this.active_config = false
-                this.key = false
-            } else{
-                if(this.active_task == false) {
-                    this.active_task = true 
-                    this.key = true
-                }else{
-                    this.active_task = false
-                    this.key = false
-                } 
+                this.key_animation = false
+                this.active_navbar = true
+                this.key_animation = true
             }
         },
-        edit_config(){
-            if(this.active_config == false) {
-                this.active_task = false
-                this.key = true
-                this.active_config = true 
+        show_navbar() {
+            if (this.active_config != true) {
+                if (this.active_navbar == false) {
+                    this.active_navbar = true
+                    this.key_animation = true
+                } else {
+                    this.active_navbar = false
+                    this.key_animation = false
+                }
+            } else {
+                this.hidden_configs()
             }
         },
-        delete_tasks(){
-            this.tasks = []
+        show_configs() {
+            if (this.active_config == false) {
+                this.active_navbar = false
+                this.key_animation = true
+                this.active_config = true
+            }
         },
-
-        // emit
-        delete_auto(){
-            // emitir
-            console.log('deletar automaticamente ativado')
+        update_title(value) {
+            this.$emit('update_title', value)
         },
-        add_task(){
-            if(this.new_task != ''){
-                // this.tasks.push({
-                //     title: this.new_task, checked: false
-                // })
-                // emitir
-                console.log('adicionar')
+        update_description(value) {
+            this.$emit('update_description', value)
+        },
+        delete_tasks() {
+            this.$emit('delete_tasks')
+        },
+        add_task() {
+            this.new_task = this.new_task.trim();
+            let clean_task = this.new_task.replace('\n', '') != ''
+            if (clean_task) {
+                this.$emit('add_task', this.new_task)
                 this.new_task = '';
                 (this.animation_add == true) ? this.animation_add = false : this.animation_add = true
-            }else{
+            } else {
                 (this.error_add_task == true) ? this.error_add_task = false : this.error_add_task = true
+                this.new_task = '';
             }
         },
-        update_text(){
-            // emitir
+        delete_auto() {
+            this.$emit('delete_auto')
         }
     },
 }
 </script>
 
 <style>
-    /* - btn e input add_task - */
+/* - btn e input add_task - */
 
 .div_add_task {
     position: fixed;
@@ -226,20 +235,24 @@ export default {
     0% {
         transform: translateX(1.5px);
     }
+
     25% {
         transform: translateX(-1.6px);
     }
+
     50% {
         transform: translateX(1.5px);
     }
+
     75% {
         transform: translateX(-1.6px);
     }
+
     100% {
         transform: translateX(1.5px);
     }
 }
- 
+
 /* -- modal -- */
 
 .modal-content {
@@ -256,6 +269,7 @@ export default {
     background-color: #fff;
     padding: .5em 1em;
 }
+
 #description_task {
     color: #444;
     background-color: #fff;
@@ -300,7 +314,7 @@ export default {
     right: 1px;
     bottom: 0px;
     left: -2.5px;
-    bottom:  2px;
+    bottom: 2px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -309,7 +323,7 @@ export default {
     transition: all .1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.modal-content .label_checkbox .check_task:checked + .span_checkbox::before {
+.modal-content .label_checkbox .check_task:checked+.span_checkbox::before {
     background-color: #fff;
     border: 2.2px solid #868686;
 }
@@ -369,11 +383,11 @@ export default {
     transition: .4s;
 }
 
-input:checked + .switch::before {
+input:checked+.switch::before {
     background-color: #0c4150;
 }
 
-input:checked + .switch:before {
+input:checked+.switch:before {
     -webkit-transform: translateX(1em);
     -ms-transform: translateX(1em);
     transform: translateX(1em);
@@ -418,6 +432,7 @@ input:checked + .switch:before {
         height: 100%;
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -429,6 +444,7 @@ input:checked + .switch:before {
         height: 100%;
         opacity: 1;
     }
+
     100% {
         width: 100%;
         height: 100%;
@@ -439,5 +455,4 @@ input:checked + .switch:before {
 .btn-danger {
     border-radius: 30px;
 }
-
 </style>

@@ -32,11 +32,8 @@ export default {
     },
     methods: {
         // emit
-        checked() {
-            setTimeout(() => {
-                // emitir
-                console.log('checked')
-            }, 300)
+        checked(index) {
+            this.$emit('check',index)
         },
     }
 }
