@@ -49,35 +49,4 @@ export default {
 	font-size: .7em;
 }
 
-/* ---- resposividade ---- */
-
-@media screen and (min-width:375px) {
-	/* -- title -- */
-	.h2_title {
-		padding-left: 0;
-		background-color: transparent;
-	}   
-	.p_title{
-		padding-left: 0;
-	}
-}
-
-
-
-@media screen and (min-width:768px) {
-    /* -- title -- */
-    .header .h2_title {
-		font-weight: 800;
-		font-size: 1.6em;
-		border: none;
-		width: 100%;
-    }
-    
-    .header .p_title {
-		color: #3f97af;
-		font-weight: 500;
-		font-size: .9em;
-    }
-}
-
 </style>

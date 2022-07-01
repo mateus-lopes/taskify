@@ -1,76 +1,18 @@
 <template>
-    <div class='div_add_task'>
+    <div @keyup.esc="hidden_configs" class='div_add_task'>
         <div class='row'>
             <div class='div_wrapper py-2'>
-                <button @click='add_task' class='btn div_btn_add shadow' :class='{active:active_navbar, error_add: error_add_task}'>   
-                    <img :class='{active:active_navbar,active_add:animation_add}' src='../assets/img/icon/close_small.svg'  class='img-fluid span_icon_add' alt='' srcset=''>
-                </button>
-                <button @click='show_configs' class='btn div_icon_config' :class='{active:active_navbar}'>   
-                    <img src='../assets/img/icon/settings.svg'  class='img-fluid' alt='' srcset=''>
-                    <span class='btn nav_wrapper' :class='{active_function:active_config}'>
-                        <!-- nav_settings -->
-                        <div class='modal-content'>
-                            <div class='modal-header pt-1 pb-0'>
-                                <p class='pt-2 text-light'><strong>Configurações</strong></p>  
-                            </div>
-                            <div class='modal-body'>
-                                <div class='row'>
-                                    <div class='col-12 pt-1'>
-                                        <input
-                                        @keyup="update_title"
-                                        :value='title'
-                                        type='text' 
-                                        class='form-control' 
-                                        placeholder='Carregando...'
-                                        />
-                                    </div>
-                                    <div class='col-12 pt-3'>
-                                        <textarea 
-                                        @keyup="update_description"
-                                        :value='description'
-                                        type='text' 
-                                        rows='5'
-                                        class='form-control' 
-                                        placeholder='Carregando...'
-                                        ></textarea>
-                                        <div>  
-                                            <div class='col-12 text-left px-0 pt-4'>
-                                                <div class="container-fluid">
-                                                    <label class='d-inline-block'>
-                                                        <div class='switch_box text-danger'>
-                                                            <input @click="$emit('delete_auto')" :checked='delete_auto_check' type='checkbox'>
-                                                            <span class='switch round'></span>
-                                                        </div>
-                                                    </label>
-                                                    <span class='span_name pl-2 text-light'>Excluir Tarefas Concluidas</span>
-                                                </div>
-                                                <div class="container-fluid">
-                                                    <label class='d-inline-block py-2'>
-                                                        <div class='switch_box text-danger'>
-                                                            <input @click="$emit('dark_mode')" :value='dark' type='checkbox'>
-                                                            <span class='switch round'></span>
-                                                        </div>
-                                                    </label>
-                                                    <span class='span_name pl-2 text-light'>Tema Escuro</span>
-                                                </div>
-                                            </div>
-                                            <label class='d-flex'>
-                                                <span @click='$emit("delete_all")' class='btn px-4 btn-secondary mt-2'>Limpar Todas as Tarefas</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </span>
-                </button>
-                <button @click='animation_add_task' :class='{active:active_navbar,active:key_animation}' class='btn div_btn_close shadow z-1'>   
-                    <img :class='{active:active_navbar, active:key_animation}' src='../assets/img/icon/close_small.svg' class='img-fluid span_icon_close' alt='' srcset=''>
-                </button>
+                <AddBtn @animation="add_task" :active_navbar="active_navbar" :error_add_task="error_add_task" />
+                <ConfigBtn @update_title="update_title" @update_description="update_description"
+                    @animation="show_configs" @delete_tasks="delete_tasks" @delete_auto="delete_auto" :title="title"
+                    :delete_auto_check="delete_auto_check" :description="description" :active_navbar="active_navbar"
+                    :active_config="active_config" />
+                <NavBtn @animation="show_navbar" :active_navbar="active_navbar" :key_animation="key_animation" />
             </div>
             <div class='col-12'>
-                <div :class='{active:active_navbar}' class='div_input'>
-                    <textarea @keyup.enter='add_task' v-model='new_task' class='form-control' placeholder='Adicionar uma Tarefa...' name='input_task'></textarea>
+                <div :class='{ active: active_navbar }' class='div_input'>
+                    <textarea @keyup.enter='add_task' v-model='new_task' class='form-control'
+                        placeholder='Adicionar uma Tarefa...' name='input_task'></textarea>
                 </div>
             </div>
         </div>
@@ -78,12 +20,20 @@
 </template>
 
 <script>
+import AddBtn from './NavComponents/AddBtn.vue'
+import ConfigBtn from './NavComponents/ConfigBtn.vue'
+import NavBtn from './NavComponents/NavBtn.vue'
 export default {
+    components: {
+        AddBtn,
+        ConfigBtn,
+        NavBtn,
+    },
     props: {
-        delete_auto_check:Boolean,
-        dark:Boolean,
-        title:String,
-        description:String,
+        delete_auto_check: Boolean,
+        dark: Boolean,
+        title: String,
+        description: String,
     },
     data() {
         return {
@@ -100,54 +50,64 @@ export default {
         }
     },
     methods: {
-        animation_add_task(){
-            if(this.active_config == true){
+        hidden_configs() {
+            if (this.active_config == true) {
                 this.active_config = false
                 this.key_animation = false
-            } else{
-                if(this.active_navbar == false) {
-                    this.active_navbar = true 
+                this.active_navbar = true
+                this.key_animation = true
+            }
+        },
+        show_navbar() {
+            if (this.active_config != true) {
+                if (this.active_navbar == false) {
+                    this.active_navbar = true
                     this.key_animation = true
-                }else{
+                } else {
                     this.active_navbar = false
                     this.key_animation = false
-                } 
+                }
+            } else {
+                this.hidden_configs()
             }
         },
-        show_configs(){
-            if(this.active_config == false) {
+        show_configs() {
+            if (this.active_config == false) {
                 this.active_navbar = false
                 this.key_animation = true
-                this.active_config = true 
+                this.active_config = true
             }
         },
-        update_title(event){
-            this.$emit('update_title', event.target.value)
+        update_title(value) {
+            this.$emit('update_title', value)
         },
-        update_description(event){
-            this.$emit('update_description', event.target.value)
+        update_description(value) {
+            this.$emit('update_description', value)
         },
-        delete_tasks(){
+        delete_tasks() {
             this.$emit('delete_tasks')
         },
-        add_task(){
+        add_task() {
             this.new_task = this.new_task.trim();
-            let clean_task =  this.new_task.replace('\n', '') != ''
-            if(clean_task){
+            let clean_task = this.new_task.replace('\n', '') != ''
+            if (clean_task) {
                 this.$emit('add_task', this.new_task)
                 this.new_task = '';
                 (this.animation_add == true) ? this.animation_add = false : this.animation_add = true
-            }else{
+            } else {
                 (this.error_add_task == true) ? this.error_add_task = false : this.error_add_task = true
                 this.new_task = '';
             }
         },
+        delete_auto() {
+            this.$emit('delete_auto')
+        }
     },
 }
 </script>
 
 <style>
-    /* - btn e input add_task - */
+/* - btn e input add_task - */
 
 .div_add_task {
     position: fixed;
@@ -275,20 +235,24 @@ export default {
     0% {
         transform: translateX(1.5px);
     }
+
     25% {
         transform: translateX(-1.6px);
     }
+
     50% {
         transform: translateX(1.5px);
     }
+
     75% {
         transform: translateX(-1.6px);
     }
+
     100% {
         transform: translateX(1.5px);
     }
 }
- 
+
 /* -- modal -- */
 
 .modal-content {
@@ -305,6 +269,7 @@ export default {
     background-color: #fff;
     padding: .5em 1em;
 }
+
 #description_task {
     color: #444;
     background-color: #fff;
@@ -349,7 +314,7 @@ export default {
     right: 1px;
     bottom: 0px;
     left: -2.5px;
-    bottom:  2px;
+    bottom: 2px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -358,7 +323,7 @@ export default {
     transition: all .1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.modal-content .label_checkbox .check_task:checked + .span_checkbox::before {
+.modal-content .label_checkbox .check_task:checked+.span_checkbox::before {
     background-color: #fff;
     border: 2.2px solid #868686;
 }
@@ -418,11 +383,11 @@ export default {
     transition: .4s;
 }
 
-input:checked + .switch::before {
+input:checked+.switch::before {
     background-color: #0c4150;
 }
 
-input:checked + .switch:before {
+input:checked+.switch:before {
     -webkit-transform: translateX(1em);
     -ms-transform: translateX(1em);
     transform: translateX(1em);
@@ -467,6 +432,7 @@ input:checked + .switch:before {
         height: 100%;
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -478,6 +444,7 @@ input:checked + .switch:before {
         height: 100%;
         opacity: 1;
     }
+
     100% {
         width: 100%;
         height: 100%;
@@ -488,5 +455,4 @@ input:checked + .switch:before {
 .btn-danger {
     border-radius: 30px;
 }
-
 </style>

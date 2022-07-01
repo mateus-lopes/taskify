@@ -22,26 +22,4 @@ export default {
 	cursor: pointer;
 }
 
-/* ---- resposividade ---- */
-
-@media screen and (min-width:375px) {
-	/* -- img user -- */
-	.header .img_user {
-		max-width: 100%;
-	}
-}
-
-@media screen and (min-width:425px) {
-	/* -- img user -- */
-	.header .img_user {
-		max-width: 70%;
-	}
-}
-
-@media screen and (min-width:768px) {
-	/* -- img user -- */
-    .header .img_user {
-			max-width: 50%;
-    }
-}
 </style>
