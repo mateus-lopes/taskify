@@ -7,13 +7,13 @@
                         <input @click='checked(index)' v-model='task.checked' type='checkbox' class='check_task' />
                         <span class='span_checkbox'></span>
                     </div>
-                    <span class='span_name' :class='{"removed":task.checked}'>{{task.title}}</span>
+                    <span class='span_name' :class='{"removed":task.checked, "text-light": theme_dark}'>{{task.title}}</span>
                 </label>
             </li>
         </ul>
         <ul v-else class='list-unstyled'>
-            <li class='text-muted'>
-                {{ empty_list }}
+            <li :class="{'text-light':theme_dark,'text-muted':!theme_dark}">
+                <p>{{ empty_list }}</p>
             </li>
         </ul>
     </div>
@@ -22,6 +22,7 @@
 <script>
 export default {
     props: {
+		theme_dark:Boolean,
         tasks:Array,
     },
     data() {

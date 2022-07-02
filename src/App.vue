@@ -1,10 +1,11 @@
 <template>
     <div class='py-4 container'>
-        <TitleList :title='title_special' :description='description_special' :src_user='src_user' />
-        <TasksList @check="checked" :tasks='tasks' />
-        <NavBar @delete_tasks="delete_tasks" @update_description="update_description" @update_title="update_title"
-            @dark_mode="dark_mode" @delete_auto="delete_auto" @add_task="add_task" :title='title'
-            :description='description' :dark="dark" :delete_auto_check='delete_auto_check' />
+        <TitleList :theme_dark="theme_dark" :title='title_special' :description='description_special'
+            :src_user='src_user' />
+        <TasksList :theme_dark="theme_dark" @check="checked" :tasks='tasks' />
+        <NavBar :theme_dark="theme_dark" @delete_tasks="delete_tasks" @update_description="update_description"
+            @update_title="update_title" @dark_mode="dark_mode" @delete_auto="delete_auto" @add_task="add_task"
+            :title='title' :description='description' :delete_auto_check='delete_auto_check' />
     </div>
 </template>
 
@@ -22,7 +23,6 @@ export default {
     },
     data() {
         return {
-
             // header
             title: 'Lista de Tarefas 2',
             description: 'Como é bom ter uma vida mais organizada',
@@ -33,7 +33,7 @@ export default {
 
             // functionalities
             delete_auto_check: true,
-            dark: false,
+            theme_dark: false,
         }
     },
     methods: {
@@ -50,8 +50,9 @@ export default {
             console.log('delete_auto', this.delete_auto_check)
         },
         dark_mode() {
-            (this.dark == true) ? this.dark = false : this.dark = true
-            console.log('dark_mode', this.dark)
+            (this.theme_dark == true) ? this.theme_dark = false : this.theme_dark = true
+            document.querySelector('body').classList.toggle('bg-dark')
+            document.querySelector('hr').classList.toggle('bg-white')
         },
         checked(index) {
             if (this.delete_auto_check == true) {

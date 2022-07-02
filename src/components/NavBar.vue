@@ -2,11 +2,11 @@
     <div @keyup.esc="hidden_configs" class='div_add_task'>
         <div class='row'>
             <div class='div_wrapper py-2'>
-                <AddBtn @animation="add_task" :active_navbar="active_navbar" :error_add_task="error_add_task" />
-                <ConfigBtn @update_title="update_title" @update_description="update_description"
+                <AddBtn @animation="add_task" :animation_add="animation_add" :active_navbar="active_navbar" :error_add_task="error_add_task" />
+                <ConfigBtn @dark_mode="dark_mode" @update_title="update_title" @update_description="update_description"
                     @animation="show_configs" @delete_tasks="delete_tasks" @delete_auto="delete_auto" :title="title"
                     :delete_auto_check="delete_auto_check" :description="description" :active_navbar="active_navbar"
-                    :active_config="active_config" />
+                    :active_config="active_config" :theme_dark="theme_dark" />
                 <NavBtn @animation="show_navbar" :active_navbar="active_navbar" :key_animation="key_animation" />
             </div>
             <div class='col-12'>
@@ -31,7 +31,7 @@ export default {
     },
     props: {
         delete_auto_check: Boolean,
-        dark: Boolean,
+        theme_dark: Boolean,
         title: String,
         description: String,
     },
@@ -101,6 +101,9 @@ export default {
         },
         delete_auto() {
             this.$emit('delete_auto')
+        },
+        dark_mode() {
+            this.$emit('dark_mode')
         }
     },
 }
