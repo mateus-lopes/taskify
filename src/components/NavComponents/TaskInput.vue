@@ -7,6 +7,7 @@
 <script>
 export default {
     props: {
+		theme_dark:Boolean,
         active_navbar:Boolean,
         new_task:String
     },

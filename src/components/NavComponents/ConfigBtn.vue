@@ -10,24 +10,28 @@
                 <div class='modal-body'>
                     <div class='row'>
                         <div class='col-12 pt-1'>
-                            <input @keyup="update_title" v-model="value_title" type='text' class='form-control'
+                            <input :class="{'bg-dark':theme_dark, 'text-light':theme_dark, 'border-dark':theme_dark}" @keyup="update_title" v-model="value_title" type='text' class='form-control'
                                 placeholder='Carregando...' />
                         </div>
                         <div class='col-12 pt-3'>
-                            <textarea @keyup="update_description" v-model="value_description" type='text' rows='5'
+                            <textarea :class="{'bg-dark':theme_dark,'text-light':theme_dark, 'border-dark':theme_dark}"
+
+                            @keyup="update_description"
+                            
+                            v-model="value_description" type='text' rows='5'
                                 class='form-control' placeholder='Carregando...'></textarea>
                             <div>
                                 <div class='col-12 text-left px-0 pt-4'>
                                     <label class='d-block'>
-                                        <div @click="$emit('delete_auto')" class='switch_box text-danger'>
-                                            <input :checked='delete_auto_check' type='checkbox'>
+                                        <div class='switch_box text-danger'>
+                                            <input @click="$emit('delete_auto')" :checked='delete_auto_check' type='checkbox'>
                                             <span class='switch round'></span>
                                         </div>
                                         <span class='span_name pl-2 text-light'>Excluir Tarefas Concluidas</span>
                                     </label>
                                     <label class='d-block py-2'>
                                         <div class='switch_box text-danger'>
-                                            <input :checked='theme_dark' type='checkbox'>
+                                            <input @click="$emit('dark_mode')" :checked='theme_dark' type='checkbox'>
                                             <span class='switch round'></span>
                                         </div>
                                         <span class='span_name pl-2 text-light'>Tema Escuro</span>

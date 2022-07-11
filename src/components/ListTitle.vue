@@ -2,7 +2,7 @@
     <div class="header container-fluid mb-4">
 		<div class="row">
 			<div class="col-8 pl-0">
-				<h2 @update="update" class="h2_title">{{title}}</h2>
+				<h2 @update="update" :class="{'text-light':theme_dark}" class="h2_title">{{title}}</h2>
 				<p @update="update" class="p_title">{{description}}</p>
 			</div>
             <DivUser :src_user="src_user" />
@@ -19,6 +19,7 @@ export default {
         DivUser,
     },
 	props: {
+		theme_dark:Boolean,
 		title:String,
 		description:String,
 		src_user:String,
