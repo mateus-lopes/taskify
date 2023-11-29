@@ -113,7 +113,7 @@ export default {
 /* - btn e input add_task - */
 
 .div_add_task {
-    position: fixed;
+    position: absolute;
     bottom: 1em;
     right: 1em;
 }
@@ -457,5 +457,17 @@ input:checked+.switch:before {
 
 .btn-danger {
     border-radius: 30px;
+}
+
+@media screen and (min-width: 370px) {
+    .div_add_task .div_btn_add {
+        margin: 0 -2.5rem 0 0;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .div_add_task .div_btn_add {
+        margin: 0 -3.5rem 0 0;
+    }
 }
 </style>

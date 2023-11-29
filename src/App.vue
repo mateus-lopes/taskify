@@ -24,7 +24,7 @@ export default {
     data() {
         return {
             // header
-            title: 'Lista de Tarefas 2',
+            title: 'Lista de Tarefas',
             description: 'Como é bom ter uma vida mais organizada',
             src_user: '../assets/img/users/user_default.png',
 
@@ -100,6 +100,11 @@ textarea:focus {
     outline: 0;
     resize: none;
     background: dotted;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 /* ---- resposividade ---- */
@@ -190,6 +195,26 @@ textarea:focus {
         width: 3.5rem;
         height: 3.5rem;
         padding: .85em .88em .88em .88em;
+    }
+}
+@media screen and (min-width:768px) {
+    /* -- img user -- */
+    .header .img_user {
+        max-width: 30%;
+    }
+
+    /* -- title -- */
+    .header .h2_title {
+        font-weight: 800;
+        font-size: 4em;
+        border: none;
+        width: 100%;
+    }
+
+    .header .p_title {
+        color: #3f97af;
+        font-weight: 500;
+        font-size: 1.5em;
     }
 }
 </style>
