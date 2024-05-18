@@ -1,0 +1,7 @@
+{
+  "name": "just-do-it",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
