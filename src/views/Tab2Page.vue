@@ -1,23 +1,25 @@
 <template>
-  <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Tab 2</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <ion-page class="page">
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Tab 2</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
-      <ExploreContainer name="Tab 2 page" />
+      <ion-row class="ion-align-items-center">
+        <ion-col size="12">
+          <ion-text class="title">Add a new task</ion-text>
+        </ion-col>
+      </ion-row>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSegment, IonSegmentButton, IonLabel, IonGrid, IonRow, IonCol, IonText } from '@ionic/vue';
 import ExploreContainer from '@/components/ExploreContainer.vue';
+import { apps } from 'ionicons/icons';
+
 </script>
+
+<style scoped>
+.title {
+  font-size: 2em;
+  font-weight: bold;
+}
+</style>
