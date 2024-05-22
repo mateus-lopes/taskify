@@ -24,6 +24,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     component: () => import('@/views/LoginView.vue')
+  },
+  {
+    path: '/register',
+    component: () => import('@/views/RegisterView.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('@/views/NotFoundView.vue')
   }
 ]
 

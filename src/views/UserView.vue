@@ -62,25 +62,7 @@
       </ion-text>
     </ion-content>
     <ion-button shape="round" fill="clear" expand="full" color="medium">change password</ion-button>
-    <ion-button shape="round" fill="clear" expand="full" color="danger" @click.stop="sureOpen = true">Logout</ion-button>
-    <ion-modal 
-      :is-open=sureOpen
-      :fullscreen=true
-    >
-      <ion-content class="d-flex ion-justify-content-center ion-align-items-center">
-        <ion-grid>
-          <ion-title class="ion-text-center ion-padding-top">
-            <small>
-              Are you sure you want to logout?
-            </small>
-          </ion-title>
-          <ion-row class="ion-justify-content-center ion-padding-top">
-            <ion-button color="danger" @click.stop="sureOpen = false">No</ion-button>
-            <ion-button @click.stop="logout()">Yes</ion-button>
-          </ion-row>
-        </ion-grid>
-      </ion-content>
-    </ion-modal>
+    <ion-button shape="round" fill="clear" expand="full" color="danger" @click.stop="logout">Logout</ion-button>
   </ion-page>
 </template>
 
@@ -98,7 +80,6 @@ const user = ref({
   email: '',
   photoUrl: ''
 });
-const sureOpen = ref(false);
 const userUID = ref(null);
 const isOpen = ref(false);
 
@@ -108,17 +89,17 @@ const logout = () => {
 
 onMounted(() => {
   onAuthStateChanged(auth, async (firebaseUser) => {
-    userUID.value = firebaseUser?.uid;
+    userUID.value = firebaseUser?.email;
 
     if (userUID.value) {
       console.log('UID do usuário:', userUID.value);
       try {
-        const userDoc = await getDoc(doc(db, 'User', userUID.value));
+        const userDoc = await getDoc(doc(db, 'users', userUID.value));
         if (userDoc.exists()) {
           const userData = userDoc.data();
           console.log('Dados do usuário:', userData);
           user.value = {
-            name: userData?.fullName,
+            name: userData?.name,
             email: userData?.email,
             photoUrl: userData?.photoUrl
           };

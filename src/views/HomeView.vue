@@ -48,12 +48,12 @@ const goProfile = () => {
 
 onMounted(() => {
   onAuthStateChanged(auth, async (firebaseUser) => {
-    userUID.value = firebaseUser?.uid;
+    userUID.value = firebaseUser?.email;
 
     if (userUID.value) {
       console.log('UID do usuário:', userUID.value);
       try {
-        const userDoc = await getDoc(doc(db, 'User', userUID.value));
+        const userDoc = await getDoc(doc(db, 'users', userUID.value));
         if (userDoc.exists()) {
           const userData = userDoc.data();
           console.log('Dados do usuário:', userData);
