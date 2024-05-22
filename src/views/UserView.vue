@@ -1,9 +1,8 @@
 <template>
   <ion-page class="page">
     <ion-row class="ion-justify-content-center ion-padding-top">
-      <ion-avatar @click.stop="isOpen = true" >
-        <img v-if="user.photoUrl != ''" :alt="user.name" :src="user.photoUrl" />
-        <img v-else :alt="user.name" src="https://practice365.co.uk/a82023/wp-content/uploads/sites/1113/2023/05/Default-Profile-Picture-Transparent.png" />
+      <ion-avatar @click.stop="isOpen = true" class="cursor-pointer">
+        <img :alt="user.name" :src="user.photoUrl" />
       </ion-avatar>
       <ion-modal :is-open="isOpen" :fullscreen="true">
         <ion-header>
@@ -63,28 +62,75 @@
       </ion-text>
     </ion-content>
     <ion-button shape="round" fill="clear" expand="full" color="medium">change password</ion-button>
-    <ion-button shape="round" fill="clear" expand="full" color="danger">Logout</ion-button>
+    <ion-button shape="round" fill="clear" expand="full" color="danger" @click.stop="sureOpen = true">Logout</ion-button>
+    <ion-modal 
+      :is-open=sureOpen
+      :fullscreen=true
+    >
+      <ion-content class="d-flex ion-justify-content-center ion-align-items-center">
+        <ion-grid>
+          <ion-title class="ion-text-center ion-padding-top">
+            <small>
+              Are you sure you want to logout?
+            </small>
+          </ion-title>
+          <ion-row class="ion-justify-content-center ion-padding-top">
+            <ion-button color="danger" @click.stop="sureOpen = false">No</ion-button>
+            <ion-button @click.stop="logout()">Yes</ion-button>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
+    </ion-modal>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { camera, imageOutline, trashOutline } from 'ionicons/icons';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSegment, IonSegmentButton, IonLabel, IonGrid, IonRow, IonCol, IonText, IonAvatar, IonModal, IonButton, IonIcon } from '@ionic/vue';
-
-const isOpen = ref(false);
-
-const cancel = () => {
-  isOpen.value = false;
-}
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/plugins/firebase';
+import { db } from '@/plugins/firebase';
+import { getDoc, doc } from 'firebase/firestore';
 
 const user = ref({
-  name: 'Full Name',
-  email: 'email',
-  // photoUrl: 'https://avatars.githubusercontent.com/u/50590861?v=4?s=400'
+  name: '',
+  email: '',
   photoUrl: ''
-})
+});
+const sureOpen = ref(false);
+const userUID = ref(null);
+const isOpen = ref(false);
 
+const logout = () => {
+  auth.signOut();
+};
+
+onMounted(() => {
+  onAuthStateChanged(auth, async (firebaseUser) => {
+    userUID.value = firebaseUser?.uid;
+
+    if (userUID.value) {
+      console.log('UID do usuário:', userUID.value);
+      try {
+        const userDoc = await getDoc(doc(db, 'User', userUID.value));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          console.log('Dados do usuário:', userData);
+          user.value = {
+            name: userData?.fullName,
+            email: userData?.email,
+            photoUrl: userData?.photoUrl
+          };
+        } else {
+          console.log('Usuário não encontrado.');
+        }
+      } catch (error) {
+        console.log('Erro ao buscar dados do usuário:', error.message);
+      }
+    }
+  });
+});
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
     <ion-tabs>
       <ion-router-outlet></ion-router-outlet>
       <ion-tab-bar :translucent=true slot="bottom">
-        <ion-tab-button tab="tab1" href="/tabs/tab1">
+        <ion-tab-button tab="app" href="/app">
           <ion-icon aria-hidden="true" :icon="apps"></ion-icon>
         </ion-tab-button>
         <ion-tab-button id="open-action-sheet">
@@ -37,7 +37,7 @@
             <ion-item>
               <ion-input placeholder="List Name"></ion-input>
             </ion-item>
-            <ion-item v-for="i in items">
+            <ion-item v-for="i in items" :key="i.id">
               <ion-label>{{ i.label }}</ion-label>
               <ion-button fill="clear" @click="removeItem(i.id)">
                 <ion-icon color="danger" :icon="close"></ion-icon>
@@ -80,7 +80,7 @@
 
 
 
-        <ion-tab-button tab="tab3" href="/tabs/tab3">
+        <ion-tab-button tab="user" href="/app/user">
           <ion-icon aria-hidden="true" :icon="person" />
         </ion-tab-button>
       </ion-tab-bar>
@@ -89,10 +89,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { apps, add, person, mic, checkmarkDone, list, close } from 'ionicons/icons';
-import { OverlayEventDetail } from '@ionic/core';
-import { IonButton, IonIcon, IonTabs, IonTabBar, IonTabButton, IonRouterOutlet, IonPage, IonContent, IonTitle, IonHeader, IonToolbar, IonSegment, IonSegmentButton, IonLabel, IonGrid, IonRow, IonCol, IonText, IonAvatar, IonModal, IonInput, IonItem, IonButtons, IonActionSheet } from '@ionic/vue';
+import { IonButton, IonIcon, IonTabs, IonTabBar, IonTabButton, IonRouterOutlet, IonPage, IonContent, IonTitle, IonHeader, IonToolbar, IonLabel, IonGrid, IonRow, IonCol, IonText, IonAvatar, IonModal, IonInput, IonItem, IonButtons, IonActionSheet } from '@ionic/vue';
 
 const isOpen = ref();
 const items = ref([])
@@ -124,25 +123,12 @@ const logResult = (ev: CustomEvent) => {
   modal_type.value = ev.detail.role;
 };
 
-const getTitle = (type: string) => computed(() => {
-  switch (type) {
-    case 'microphone':
-      return 'New task using your voice';
-    case 'simpleTask':
-      return 'New simple task';
-    case 'itemsList':
-      return 'New list of items';
-    default:
-      return 'New task';
-  }
-});
-
 const cancel = () => isOpen.value = false;
 
 const confirm = () => isOpen.value = false;
 
 const removeItem = (id: number) => {
-  items.value = items.value.filter(i => i.id !== id);
+  items.value = items.value.filter((i: { id: number }) => i.id !== id);
 }
 
 const addItem = () => {
@@ -150,7 +136,7 @@ const addItem = () => {
   items.value = [...items.value, {
     label: newItem.value,
     id: items.value.length + 1,
-  }];
+  }] as { label: string; id: number; }[];
   newItem.value = '';
   input.value.$el.setFocus();
 }
