@@ -28,3 +28,9 @@ http://ionicframework.com/docs/theming/ */
     --padding-top: 10px;
     --padding-bottom: 10px;
 }
+
+.container {
+    padding: 1em;
+    width: 75%;
+    margin: 0 auto;
+}
