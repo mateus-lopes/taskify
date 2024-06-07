@@ -1,6 +1,5 @@
 <template>
   <ion-page class="page">
-    <header-app></header-app>
       <ion-content class="ion-padding-top">
         <ion-grid>
           <ion-row>
@@ -14,6 +13,5 @@
 </template>
 
 <script lang="ts" setup>
-import HeaderApp from '@/components/HeaderApp.vue';
 import { IonContent, IonGrid, IonRow, IonCol, IonText } from '@ionic/vue';
 </script>

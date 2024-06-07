@@ -69,10 +69,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { camera, imageOutline, trashOutline } from 'ionicons/icons';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSegment, IonSegmentButton, IonLabel, IonGrid, IonRow, IonCol, IonText, IonAvatar, IonModal, IonButton, IonIcon } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonText, IonAvatar, IonModal, IonButton, IonIcon } from '@ionic/vue';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/plugins/firebase';
-import { db } from '@/plugins/firebase';
+import { auth } from './firebase';
+import { db } from './firebase';
 import { getDoc, doc } from 'firebase/firestore';
 
 const user = ref({

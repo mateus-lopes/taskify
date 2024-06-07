@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import TabsLayout from '@/views/TabsLayout.vue'
+import TabsLayout from './TabsLayout.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,26 +13,14 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        component: () => import('@/views/HomeView.vue')
+        component: () => import('@/HomeView.vue')
       },
       {
         path: 'user',
-        component: () => import('@/views/UserView.vue')
+        component: () => import('./UserView.vue')
       },
     ]
   },
-  {
-    path: '/login',
-    component: () => import('@/views/LoginView.vue')
-  },
-  {
-    path: '/register',
-    component: () => import('@/views/RegisterView.vue')
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    component: () => import('@/views/NotFoundView.vue')
-  }
 ]
 
 const router = createRouter({
