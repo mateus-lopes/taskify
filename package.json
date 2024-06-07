@@ -23,8 +23,12 @@
     "@ionic/pwa-elements": "^3.3.0",
     "@ionic/vue": "^8.0.0",
     "@ionic/vue-router": "^8.0.0",
+    "@vueuse/core": "^10.9.0",
+    "@vueuse/firebase": "^10.9.0",
     "firebase": "^10.12.1",
     "ionicons": "^7.0.0",
+    "pinia": "^2.1.7",
+    "reflect-metadata": "^0.2.2",
     "vue": "^3.3.0",
     "vue-router": "^4.2.0"
   },

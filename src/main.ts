@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router';
-
+import router from '@/core/router';
+import pinia from '@/core/plugins/pinia';
 import { IonicVue } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -32,7 +32,7 @@ import '@ionic/vue/css/display.css';
 import '@ionic/vue/css/palettes/dark.system.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import '@/core/infra/theme/variables.css';
 
 /* loader */
 import { defineCustomElements } from '@ionic/pwa-elements/loader'; 
@@ -40,6 +40,7 @@ defineCustomElements(window);
 
 const vueApp = createApp(App)
   .use(IonicVue)
+  .use(pinia)
   .use(router);
 
 router.isReady().then(() => {
