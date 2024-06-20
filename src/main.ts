@@ -34,14 +34,10 @@ import '@ionic/vue/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 
-/* loader */
-import { defineCustomElements } from '@ionic/pwa-elements/loader'; 
-defineCustomElements(window);
-
-const vueApp = createApp(App)
+const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
 router.isReady().then(() => {
-  vueApp.mount('#app');
+  app.mount('#app');
 });

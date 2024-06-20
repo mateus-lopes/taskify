@@ -1,5 +1,5 @@
 {
-  "name": "just-do-it",
+  "name": "taskify",
   "integrations": {
     "capacitor": {}
   },

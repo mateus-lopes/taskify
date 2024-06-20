@@ -2,7 +2,7 @@
     <ion-page>
         <ion-header></ion-header>
         <ion-img
-            src="../../resources/logo-blue.png"
+            src="./logo-blue.png"
             alt="Firebase logo"
             class="logo rotate-full"
             :class="{ 'rotate-loading': loader }"

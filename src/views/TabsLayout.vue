@@ -80,7 +80,7 @@
 
 
 
-        <ion-tab-button tab="user" href="/app/user">
+        <ion-tab-button tab="user" href="/user">
           <ion-icon aria-hidden="true" :icon="person" />
         </ion-tab-button>
       </ion-tab-bar>

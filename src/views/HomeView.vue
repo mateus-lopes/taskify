@@ -1,19 +1,19 @@
 <template>
   <ion-page class="page">
-    <header-app></header-app>
-      <ion-content class="ion-padding-top">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-text color="medium">No tasks</ion-text>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-content>
+    <ion-content :fullscreen="true">
+      <header-app></header-app>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-text color="medium">No tasks</ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import HeaderApp from '@/components/HeaderApp.vue';
-import { IonContent, IonGrid, IonRow, IonCol, IonText } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonText } from '@ionic/vue';
 </script>

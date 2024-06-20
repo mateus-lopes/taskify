@@ -8,17 +8,23 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/app'
   },
   {
-    path: '/app/',
+    path: '/app',
     component: TabsLayout,
     children: [
       {
         path: '',
         component: () => import('@/views/HomeView.vue')
-      },
+      }
+    ]
+  },
+  {
+    path: '/user',
+    component: TabsLayout,
+    children: [
       {
-        path: 'user',
+        path: '',
         component: () => import('@/views/UserView.vue')
-      },
+      }
     ]
   },
   {
