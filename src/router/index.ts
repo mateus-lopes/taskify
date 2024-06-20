@@ -28,6 +28,16 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: '/task',
+    component: TabsLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/TaskView.vue')
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('@/views/LoginView.vue')
   },

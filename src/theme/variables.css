@@ -34,3 +34,7 @@ http://ionicframework.com/docs/theming/ */
     width: 75%;
     margin: 0 auto;
 }
+
+.bg-transparent {
+    background-color: transparent !important;
+}
