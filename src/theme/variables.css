@@ -1,11 +1,24 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
-.page {
-    margin: 2em;
+.m-fab {
+    margin: 1em;
+}
+
+.m-page {
+    margin: .5em;
+}
+
+.p-close {
+    display: block;
+    padding: 1em .5em;
 }
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.flex {
+    display: flex;
 }
 
 .button-text {
@@ -33,4 +46,8 @@ http://ionicframework.com/docs/theming/ */
     padding: 1em;
     width: 75%;
     margin: 0 auto;
+}
+
+.bg-transparent {
+    background-color: transparent !important;
 }

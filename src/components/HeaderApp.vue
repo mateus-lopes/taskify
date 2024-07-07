@@ -1,27 +1,25 @@
 <template>
-    <ion-row class="ion-align-items-center">
-        <ion-col size="10">
+    <ion-row class="ion-align-items-center ion-justify-content-end">
+        <ion-col size="9">
             <ion-text class="title">My tasks</ion-text>
         </ion-col>
-        <ion-col size="2">
-            <ion-avatar @click.stop="goProfile()" class="cursor-pointer">
-                <img :alt="user.name" :src="user.photoUrl" />
-            </ion-avatar>
+        <ion-col size="3" class="ion-align-items-center ion-justify-content-end flex">
+            <router-link to="/user">
+                <ion-avatar class="cursor-pointer" style="text-align: right;">
+                    <img :alt="user.name" :src="user.photoUrl" style="text-align: right;" />
+                </ion-avatar>
+            </router-link>
         </ion-col>
     </ion-row>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import { IonAvatar, IonCol, IonRow, IonText } from '@ionic/vue';
-import { apps, checkmarkDoneOutline, checkmarkOutline } from 'ionicons/icons';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/plugins/firebase';
 import { db } from '@/plugins/firebase';
 import { getDoc, doc } from 'firebase/firestore';
-
-const router = useRouter()
 
 const user = ref({
     name: '',
@@ -29,9 +27,6 @@ const user = ref({
     photoUrl: ''
 })
 const userUID = ref(null)
-const goProfile = () => {
-    router.push('/app/user')
-}
 
 onMounted(() => {
     onAuthStateChanged(auth, async (firebaseUser) => {
@@ -43,7 +38,6 @@ onMounted(() => {
         const userDoc = await getDoc(doc(db, 'users', userUID.value));
         if (userDoc.exists()) {
             const userData = userDoc.data();
-            console.log('Dados do usuário:', userData);
             user.value = {
             name: userData?.fullName,
             email: userData?.email,
@@ -65,4 +59,5 @@ onMounted(() => {
     font-size: 2em;
     font-weight: bold;
 }
+
 </style>
