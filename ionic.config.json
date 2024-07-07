@@ -1,0 +1,7 @@
+{
+  "name": "taskify",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
