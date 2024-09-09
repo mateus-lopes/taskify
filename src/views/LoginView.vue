@@ -1,3 +1,39 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { IonButton, IonContent, IonHeader, IonInput, IonPage, IonAlert } from '@ionic/vue';
+import { useUserStore } from '@/stores/storeUser';
+
+const userStore = useUserStore();
+const email = ref('');
+const password = ref('');
+const errorMessage = ref('');
+const errorColor = ref('');
+const loader = ref(false);
+const router = useRouter();
+
+const login = async () => {
+    try {
+        loader.value = true;
+        await userStore.login(email.value, password.value);
+        console.log('Logged in successfully');
+        router.push('/');
+    } catch (error) {
+        console.error('Error logging in:', (error as any).message);
+        errorMessage.value = (error as any).message;
+        errorColor.value = 'danger';
+    } finally {
+        loader.value = false;
+    }
+};
+
+const cleanLoader = () => {
+    loader.value = false;
+    errorMessage.value = '';
+    errorColor.value = '';
+};
+</script>
+
 <template>
     <ion-page>
         <ion-header></ion-header>
@@ -22,39 +58,6 @@
     </ion-page>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToolbar, IonAlert } from '@ionic/vue';
-
-const email = ref('');
-const password = ref('');
-const errorMessage = ref('');
-const errorColor = ref('');
-const loader = ref(false);
-const router = useRouter();
-
-const login = async () => {
-    const auth = getAuth();
-    try {
-        loader.value = true;
-        await signInWithEmailAndPassword(auth, email.value, password.value);
-        console.log('Logged in successfully');
-        router.push('/');
-    } catch (error) {
-        console.error('Error logging in:', (error as any).message);
-        errorMessage.value = (error as any).message;
-        errorColor.value = 'danger';
-    }
-};
-
-const cleanLoader = () => {
-    loader.value = false;
-    errorMessage.value = '';
-    errorColor.value = '';
-};
-</script>
 
 <style scoped>
 .label {

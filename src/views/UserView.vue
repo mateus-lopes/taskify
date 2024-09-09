@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { camera, imageOutline, trashOutline, close } from 'ionicons/icons';
+import { IonAvatar, IonButton, IonButtons, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonPage, IonRow, IonTitle, IonToolbar, IonText } from '@ionic/vue';
+import { useUserStore } from '@/stores/storeUser';
+
+const userStore = useUserStore();
+const isOpen = ref(false);
+
+onMounted(() => {
+  userStore.getUserData();
+});
+</script>
+
 <template>
   <ion-page class="m-page">
     <ion-fab vertical="start" horizontal="end">
@@ -7,7 +21,7 @@
     </ion-fab>
       <ion-row class="ion-justify-content-center ion-padding-top">
         <ion-avatar @click.stop="isOpen = true" class="cursor-pointer">
-          <img :alt="user.name" :src="user.photoUrl" />
+          <img :alt="userStore.state.name" :src="userStore.state.photoUrl" />
         </ion-avatar>
         <ion-modal :is-open="isOpen" :fullscreen="true">
           <ion-header>
@@ -29,11 +43,11 @@
             <ion-title
               class="ion-text-center ion-margin-top ion-padding"
             >
-              <small v-if="user.photoUrl === ''">
+              <small v-if="userStore.state.photoUrl === ''">
                   Take a picture or select one from your gallery
                 </small>
                 <small v-else>
-                  {{ user.photoUrl }}
+                  {{ userStore.state.photoUrl }}
                 </small>
               </ion-title>
               <ion-grid>
@@ -49,9 +63,8 @@
                   </ion-button>
                 </ion-row>
                 <ion-row class="ion-justify-content-center">
-                  <!-- example picture -->
                   <ion-grid class="ion-margin ion-padding" >
-                  <img v-if="user.photoUrl !== ''" shape="round" :src="user.photoUrl" />
+                  <img v-if="userStore.state.photoUrl !== ''" shape="round" :src="userStore.state.photoUrl" />
                 </ion-grid>
               </ion-row>
               </ion-grid>
@@ -60,63 +73,16 @@
       </ion-row>
       <ion-content>
         <ion-title class="ion-no-padding name">
-          {{ user.name }}
+          {{ userStore.state.name }}
         </ion-title>
         <ion-text color="medium email">
-          {{ user.email }}
+          {{ userStore.state.email }}
         </ion-text>
       </ion-content>
       <ion-button shape="round" fill="clear" expand="full" color="medium">change password</ion-button>
-      <ion-button shape="round" fill="clear" expand="full" color="danger" @click.stop="logout">Logout</ion-button>
+      <ion-button shape="round" fill="clear" expand="full" color="danger" @click.stop="userStore.logout()">Logout</ion-button>
   </ion-page>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { camera, imageOutline, trashOutline, close } from 'ionicons/icons';
-import { IonAvatar, IonButton, IonButtons, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonPage, IonRow, IonTitle, IonToolbar, IonText } from '@ionic/vue';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/plugins/firebase';
-import { db } from '@/plugins/firebase';
-import { getDoc, doc } from 'firebase/firestore';
-
-const user = ref({
-  name: '',
-  email: '',
-  photoUrl: ''
-});
-const userUID = ref(null);
-const isOpen = ref(false);
-
-const logout = () => {
-  auth.signOut();
-};
-
-onMounted(() => {
-  onAuthStateChanged(auth, async (firebaseUser) => {
-    userUID.value = firebaseUser?.email;
-
-    if (userUID.value) {
-      console.log('UID do usuário:', userUID.value);
-      try {
-        const userDoc = await getDoc(doc(db, 'users', userUID.value));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          user.value = {
-            name: userData?.name,
-            email: userData?.email,
-            photoUrl: userData?.photoUrl
-          };
-        } else {
-          console.log('Usuário não encontrado.');
-        }
-      } catch (error) {
-        console.log('Erro ao buscar dados do usuário:', error.message);
-      }
-    }
-  });
-});
-</script>
 
 <style scoped>
 .title {

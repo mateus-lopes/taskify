@@ -1,13 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
-import { close, add, chevronForwardOutline, flashOffOutline, checkmarkOutline, arrowBackOutline } from 'ionicons/icons';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonInput, IonButton, IonIcon, IonLabel } from '@ionic/vue';
 import { useRouter } from 'vue-router';
-import { collection, addDoc } from 'firebase/firestore';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonInput, IonButton, IonIcon, IonLabel, useIonRouter } from '@ionic/vue';
+import { close, add, chevronForwardOutline, flashOffOutline, checkmarkOutline, arrowBackOutline } from 'ionicons/icons';
+import { useTaskStore } from '../stores/storeTasks';
 
-const router = useRouter();
+const { addTask } = useTaskStore();
+const router = useIonRouter();
 const items = ref([]);
 const newItem = ref('');
 const listTitle = ref('');
@@ -18,18 +17,12 @@ const addItem = () => {
     newItem.value = '';
     focus.value = true;
 };
-
 const removeItem = (id) => {
     items.value = items.value.filter(item => item.id !== id);
 };
-
 const navigateTo = (path) => {
     router.push(path);
 };
-
-const db = getFirestore();
-const auth = getAuth();
-
 const addNewList = async () => {
     if (!listTitle.value) {
         console.log('List Title is required');
@@ -38,34 +31,23 @@ const addNewList = async () => {
         console.log('Items are required');
         return;
     }
-
-    try {
-        const user = auth.currentUser;
-        const docRef = await addDoc(collection(db, 'tasks'), {
-            title: listTitle.value,
-            items: items.value,
-            authorUid: user.uid
-        });
-        console.log('Document written with ID: ', docRef.id);
-    } catch (error) {
-        console.error('Error adding document: ', error);
-    }
-    navigateTo('/')
+    
+    addTask({ title: listTitle.value, items: items.value, authorUid: auth.currentUser.uid });
 };
 </script>
-
 
 <template>
     <ion-page>
         <ion-header> 
             <ion-toolbar class="pt-1">
-                <ion-icon slot="start" class="ion-padding cursor-pointer" :icon="arrowBackOutline" size="small" @click="navigateTo('/')"></ion-icon>
+                <ion-button slot="start" :fill="false" class="mr-1" @click="router.back()">
+                    <ion-icon :icon="arrowBackOutline" size="default"></ion-icon>
+                </ion-button>
                 <ion-title>
                     <ion-input placeholder="Enter List Name" v-model="listTitle"></ion-input>
                 </ion-title>
                 <ion-button slot="end" class="mr-1" @click="addNewList()">
-                    <ion-icon :icon="checkmarkOutline" size="default"></ion-icon>
-                     <!-- save -->
+                    <ion-icon :icon="checkmarkOutline" size="default" color="dark"></ion-icon>
                 </ion-button>
             </ion-toolbar>
         </ion-header>
@@ -85,7 +67,7 @@ const addNewList = async () => {
             <ion-item class="add-div">
                 <ion-icon :icon="chevronForwardOutline"></ion-icon>
                 <ion-input ref="input" class="pa-2" :autofocus="true" v-model="newItem" placeholder="New Item"></ion-input>
-                <ion-button @click="addItem()" size="small">
+                <ion-button @click="addItem()" size="default" :fill="true" color="primary">
                     <ion-icon :icon="add"></ion-icon>
                 </ion-button>
             </ion-item>

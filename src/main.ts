@@ -6,8 +6,8 @@ import { ionic } from './plugins/ionic';
 import './theme/variables.css';
 
 const app = createApp(App)
-  .use(ionic)
   .use(pinia)
+  .use(ionic)
   .use(router);
 
 router.isReady().then(() => {

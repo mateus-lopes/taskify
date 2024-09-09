@@ -1,3 +1,46 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { IonButton, IonContent, IonHeader, IonInput, IonPage, IonAlert } from '@ionic/vue';
+import { useUserStore } from '@/stores/storeUser';
+
+const router = useRouter();
+const userStore = useUserStore();
+
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const errorMessage = ref('');
+const errorColor = ref('');
+const loader = ref(false);
+
+const register = async () => {
+    try {
+        loader.value = true;
+        const userData = {
+            name: name.value,
+            email: email.value,
+            photoUrl: 'https://practice365.co.uk/a82023/wp-content/uploads/sites/1113/2023/05/Default-Profile-Picture-Transparent.png',
+            password: password.value,
+        };
+        await userStore.register(userData);
+    } catch (error: any) {
+        errorMessage.value = error.message;
+        errorColor.value = 'danger';
+    } finally {
+        loader.value = false;
+        router.push('/');
+    }
+};
+
+const cleanLoader = () => {
+    loader.value = false;
+    errorMessage.value = '';
+    errorColor.value = '';
+};
+</script>
+
 <template>
     <ion-page>
         <ion-header></ion-header>
@@ -25,53 +68,6 @@
         </ion-grid>
     </ion-page>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToolbar, IonAlert } from '@ionic/vue';
-
-const router = useRouter();
-const db = getFirestore();
-const auth = getAuth();
-
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const errorMessage = ref('');
-const errorColor = ref('');
-const loader = ref(false);
-
-const register = async () => {
-    try {
-        loader.value = true;
-        const user = {
-            name: name.value,
-            email: email.value,
-            photoUrl: 'https://practice365.co.uk/a82023/wp-content/uploads/sites/1113/2023/05/Default-Profile-Picture-Transparent.png',
-        };
-        await setDoc(doc(db, 'users', email.value), user);
-        await createUserWithEmailAndPassword(auth, email.value, password.value);
-        console.log('Usuário cadastrado com sucesso.');
-    } catch (error) {
-        console.error('Error registering:', error.message);
-        errorMessage.value = error.message;
-        errorColor.value = 'danger';
-    } finally {
-        loader.value = false;
-        router.push('/');
-    }
-};
-
-const cleanLoader = () => {
-    loader.value = false;
-    errorMessage.value = '';
-    errorColor.value = '';
-};
-</script>
 
 <style scoped>
 .label {
