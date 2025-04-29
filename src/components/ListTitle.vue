@@ -5,7 +5,7 @@
 				<h2 @update="update" :class="{'text-light':theme_dark}" class="h2_title">{{title}}</h2>
 				<p @update="update" class="p_title">{{description}}</p>
 			</div>
-            <DivUser :src_user="src_user" />
+            <DivUser />
 		</div>
 		<hr style="margin-left: -15px;margin-right:-15px;"> 
     </div>

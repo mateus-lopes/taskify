@@ -23,15 +23,10 @@ export default {
     },
     data() {
         return {
-            // header
             title: 'Just a Todo',
             description: 'A simple todo list with Vue.js',
             src_user: '../assets/img/users/user_default.png',
-
-            // tasks
             tasks: [],
-
-            // functionalities
             delete_auto_check: true,
             theme_dark: false,
         }
@@ -147,16 +142,12 @@ textarea:focus {
     margin: 0 auto;
 }
 
-/* ---- resposividade ---- */
-
 @media screen and (min-width:375px) {
 
-    /* -- img user -- */
     .header .img_user {
         max-width: 100%;
     }
 
-    /* -- title -- */
     .h2_title {
         padding-left: 0;
         background-color: transparent;
@@ -166,7 +157,6 @@ textarea:focus {
         padding-left: 0;
     }
 
-    /* -- navbar -- */
     .div_add_task .div_btn_close {
         width: 3rem;
         height: 3rem;
@@ -189,12 +179,10 @@ textarea:focus {
 
 @media screen and (min-width:425px) {
 
-    /* -- img user -- */
     .header .img_user {
         max-width: 70%;
     }
 
-    /* -- title -- */
     .header .h2_title {
         font-size: 2em;
     }
@@ -203,12 +191,10 @@ textarea:focus {
 
 @media screen and (min-width:500px) {
 
-/* -- img user -- */
 .header .img_user {
     max-width: 70%;
 }
 
-/* -- title -- */
 .header .h2_title {
     font-size: 3em;
 }
@@ -217,12 +203,10 @@ textarea:focus {
 
 @media screen and (min-width:768px) {
 
-    /* -- img user -- */
     .header .img_user {
         max-width: 50%;
     }
 
-    /* -- title -- */
     .header .h2_title {
         font-weight: 800;
         font-size: 1.6em;
@@ -236,7 +220,6 @@ textarea:focus {
         font-size: .9em;
     }
 
-    /* -- navbar -- */
     .div_add_task .div_btn_close {
         width: 3.5rem;
         height: 3.5rem;
@@ -257,12 +240,11 @@ textarea:focus {
     }
 }
 @media screen and (min-width:1024px) {
-    /* -- img user -- */
+
     .header .img_user {
         max-width: 30%;
     }
 
-    /* -- title -- */
     .header .h2_title {
         font-weight: 800;
         font-size: 3em;
