@@ -2,7 +2,7 @@
 
 I built this page to play with vue and animations in css 
 
-[![Deploy](https://img.shields.io/badge/View%20Project-online-blue)](https://6811655999a347766b8b5199--taskify000.netlify.app)
+[![Deploy](https://img.shields.io/badge/View%20Project-online-blue)](https://taskify000.netlify.app)
 
 ![Imagem do projeto](https://github.com/user-attachments/assets/444c516a-2adc-4337-9fd1-388375d683c4)
 
