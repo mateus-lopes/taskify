@@ -13,7 +13,7 @@
 import TitleList from './components/ListTitle.vue'
 import TasksList from './components/TasksList.vue'
 import NavBar from './components/NavBar.vue'
-// so vem vagabunda
+
 export default {
     name: 'App',
     components: {
@@ -24,8 +24,8 @@ export default {
     data() {
         return {
             // header
-            title: 'Lista de Tarefas',
-            description: 'Como é bom ter uma vida mais organizada',
+            title: 'Just a Todo',
+            description: 'A simple todo list with Vue.js',
             src_user: '../assets/img/users/user_default.png',
 
             // tasks
@@ -50,9 +50,9 @@ export default {
             console.log('delete_auto', this.delete_auto_check)
         },
         dark_mode() {
-            (this.theme_dark == true) ? this.theme_dark = false : this.theme_dark = true
-            document.querySelector('body').classList.toggle('bg-dark')
-            document.querySelector('hr').classList.toggle('bg-white')
+            this.theme_dark = !this.theme_dark;
+            document.querySelector('body').classList.toggle('bg-dark');
+            document.querySelector('hr')?.classList.toggle('bg-white');
         },
         checked(index) {
             if (this.delete_auto_check == true) {
@@ -86,6 +86,46 @@ export default {
                 return this.description
             }
         },
+    },
+    created() {
+        const savedTasks = localStorage.getItem('tasks');
+        const savedTitle = localStorage.getItem('title');
+        const savedDescription = localStorage.getItem('description');
+        const savedTheme = localStorage.getItem('theme_dark');
+
+        if (savedTasks) {
+            this.tasks = JSON.parse(savedTasks);
+        }
+        if (savedTitle) {
+            this.title = savedTitle;
+        }
+        if (savedDescription) {
+            this.description = savedDescription;
+        }
+        if (savedTheme !== null) {
+            this.theme_dark = JSON.parse(savedTheme);
+            if (this.theme_dark) {
+                document.querySelector('body').classList.add('bg-dark');
+                document.querySelector('hr')?.classList.add('bg-white');
+            }
+        }
+    },
+    watch: {
+        tasks: {
+            handler(newTasks) {
+                localStorage.setItem('tasks', JSON.stringify(newTasks));
+            },
+            deep: true
+        },
+        title(newTitle) {
+            localStorage.setItem('title', newTitle);
+        },
+        description(newDescription) {
+            localStorage.setItem('description', newDescription);
+        },
+        theme_dark(newTheme) {
+            localStorage.setItem('theme_dark', JSON.stringify(newTheme));
+        }
     }
 }
 
@@ -154,6 +194,25 @@ textarea:focus {
         max-width: 70%;
     }
 
+    /* -- title -- */
+    .header .h2_title {
+        font-size: 2em;
+    }
+
+}
+
+@media screen and (min-width:500px) {
+
+/* -- img user -- */
+.header .img_user {
+    max-width: 70%;
+}
+
+/* -- title -- */
+.header .h2_title {
+    font-size: 3em;
+}
+
 }
 
 @media screen and (min-width:768px) {
@@ -197,7 +256,7 @@ textarea:focus {
         padding: .85em .88em .88em .88em;
     }
 }
-@media screen and (min-width:768px) {
+@media screen and (min-width:1024px) {
     /* -- img user -- */
     .header .img_user {
         max-width: 30%;
@@ -206,7 +265,7 @@ textarea:focus {
     /* -- title -- */
     .header .h2_title {
         font-weight: 800;
-        font-size: 4em;
+        font-size: 3em;
         border: none;
         width: 100%;
     }
@@ -214,7 +273,11 @@ textarea:focus {
     .header .p_title {
         color: #3f97af;
         font-weight: 500;
-        font-size: 1.5em;
+        font-size: 1.2em;
+    }
+
+    body {
+        padding: 5em !important;
     }
 }
 </style>
