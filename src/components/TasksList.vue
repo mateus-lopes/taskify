@@ -27,8 +27,7 @@ export default {
     },
     data() {
         return {
-            // lista definida estaticamente
-            empty_list: 'Sua lista está vazia...',
+            empty_list: 'Your list is empty!',
         }
     },
     methods: {
@@ -41,9 +40,6 @@ export default {
 </script>
 
 <style>
-
-/* - checkbox - */
-
 .label_checkbox {
     display: felx;
     justify-content: center;
